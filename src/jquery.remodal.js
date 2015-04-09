@@ -222,6 +222,10 @@
     var tdModal;
     var tdBg;
 
+    var closeButtonSelector = '[data-' + namespace + '-action="close"]';
+    var confirmButtonSelector = '[data-' + namespace + '-action="confirm"]';
+    var cancelButtonSelector = '[data-' + namespace + '-action="cancel"]';
+
     remodal.settings = $.extend({}, defaults, options);
 
     // Build DOM
@@ -234,17 +238,14 @@
     }
 
     remodal.$bg = $('.' + namespace + '-bg');
-    remodal.$closeButton = $('<a href="#"></a>').addClass(namespace + '-close');
+
     remodal.$wrapper = $('<div>').addClass(namespace + '-wrapper');
     remodal.$modal = $modal;
     remodal.$modal.addClass(namespace);
     remodal.$modal.css('visibility', 'visible');
 
-    remodal.$modal.append(remodal.$closeButton);
     remodal.$wrapper.append(remodal.$modal);
     remodal.$body.append(remodal.$wrapper);
-    remodal.$confirmButton = remodal.$modal.find('.' + namespace + '-confirm');
-    remodal.$cancelButton = remodal.$modal.find('.' + namespace + '-cancel');
 
     // Calculate timeouts
     tdOverlay = getTransitionDuration(remodal.$overlay);
@@ -253,14 +254,14 @@
     remodal.td = Math.max(tdOverlay, tdModal, tdBg);
 
     // Add the close button event listener
-    remodal.$wrapper.on('click.' + namespace, '.' + namespace + '-close', function(e) {
+    remodal.$wrapper.on('click.' + namespace, closeButtonSelector, function(e) {
       e.preventDefault();
 
       remodal.close();
     });
 
     // Add the cancel button event listener
-    remodal.$wrapper.on('click.' + namespace, '.' + namespace + '-cancel', function(e) {
+    remodal.$wrapper.on('click.' + namespace, cancelButtonSelector, function(e) {
       e.preventDefault();
 
       remodal.$modal.trigger('cancel');
@@ -271,7 +272,7 @@
     });
 
     // Add the confirm button event listener
-    remodal.$wrapper.on('click.' + namespace, '.' + namespace + '-confirm', function(e) {
+    remodal.$wrapper.on('click.' + namespace, confirmButtonSelector, function(e) {
       e.preventDefault();
 
       remodal.$modal.trigger('confirm');
